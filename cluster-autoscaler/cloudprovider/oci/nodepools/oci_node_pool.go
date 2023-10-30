@@ -139,6 +139,7 @@ func (np *nodePool) DeleteNodes(nodes []*apiv1.Node) (err error) {
 	// we will still loop through just to future proof this function
 	for _, node := range nodes {
 		belongs, err := np.Belongs(node)
+		klog.V(5).Infof("Node being deleted:  %+v", node)
 		if err != nil {
 			return err
 		}
