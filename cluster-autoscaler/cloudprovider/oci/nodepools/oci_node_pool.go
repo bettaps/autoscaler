@@ -138,8 +138,11 @@ func (np *nodePool) DeleteNodes(nodes []*apiv1.Node) (err error) {
 	// Each node is deleted in its own DeleteNodes call, and all the calls are in parallel
 	// we will still loop through just to future proof this function
 	for _, node := range nodes {
+
+		klog.V(5).Infof("Node that needs to be deleted:  %+v", node)
+
 		belongs, err := np.Belongs(node)
-		klog.V(5).Infof("Node being deleted:  %+v", node)
+
 		if err != nil {
 			return err
 		}
@@ -234,6 +237,7 @@ func (np *nodePool) Belongs(node *apiv1.Node) (bool, error) {
 	}
 
 	if targetNodePool == nil {
+		klog.Infof("pribs dbg - Node is %v", node)
 		return false, fmt.Errorf("%s doesn't belong to a known nodepool", node.Name)
 	}
 
